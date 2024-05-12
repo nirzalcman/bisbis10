@@ -43,8 +43,8 @@ public class ResturantService {
             optionalRestaurant.setCuisines(restaurant.getCuisines());
         
 
-        if (restaurant.iskosher() != null){
-            optionalRestaurant.setIskosher(restaurant.iskosher());
+        if (restaurant.getisKosher() != null){
+            optionalRestaurant.setIsKosher(restaurant.getisKosher());
         }
     }
 

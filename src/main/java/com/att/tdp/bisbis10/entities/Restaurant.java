@@ -33,6 +33,7 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore    
     private List<Order> orders;
 
     public Restaurant() {
@@ -74,11 +75,11 @@ public class Restaurant {
         this.numberOfRatings = numberOfRatings;
     }
 
-    public Boolean iskosher() {
+    public Boolean getisKosher() {
         return isKosher;
     }
 
-    public void setIskosher(boolean isKosher) {
+    public void setIsKosher(boolean isKosher) {
         this.isKosher = isKosher;
     }
 

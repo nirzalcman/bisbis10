@@ -23,20 +23,20 @@ public class ResturantControler {
     @Autowired
     private ResturantService resturantService;
 
-    @GetMapping("/restaurants")
-    public ResponseEntity<List<Restaurant>> getRestaurants() {
-        return ResponseEntity.ok(resturantService.getRestaurants());
-    }
-
+    
     @GetMapping("/restaurants/{id}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
         return ResponseEntity.ok(resturantService.getRestaurantById(id));
     }
 
-    @GetMapping("/restaurants?cuisine={cuisine}")
-    public ResponseEntity<List<Restaurant>> getRestaurantsByCuisine(@RequestParam String cuisine) {
+    @GetMapping("/restaurants")
+    public ResponseEntity<List<Restaurant>> getRestaurantsByCuisine(@RequestParam(required = false) String cuisine) {
+    if (cuisine != null) {
         return ResponseEntity.ok(resturantService.getRestaurantsByCuisine(cuisine));
     }
+    return ResponseEntity.ok(resturantService.getRestaurants());
+}
+
 
     @PostMapping("/restaurants")
     public ResponseEntity<Void> addRestaurant(@RequestBody Restaurant restaurant) {

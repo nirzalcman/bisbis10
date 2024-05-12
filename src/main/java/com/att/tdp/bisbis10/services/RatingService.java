@@ -20,13 +20,13 @@ public class RatingService {
     private RestaurantRepository restaurantRepository;
 
     public void addRating(Rating rating) {
+        System.out.println(rating.getRestaurantId());
         Restaurant restaurant = restaurantRepository.findById(rating.getRestaurantId())
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id " + rating.getRestaurantId() + " not found."));
-        
         int new_number_ratings = restaurant.getNumberOfRatings() +1;
         double average_rating = restaurant.getAverageRating();
         restaurant.setNumberOfRatings(new_number_ratings);
-        restaurant.setAverageRating((average_rating + rating.getRating()) / (new_number_ratings));
+        restaurant.setAverageRating((average_rating*(new_number_ratings-1) + rating.getRating()) / (new_number_ratings));
         restaurantRepository.save(restaurant);
     }
 

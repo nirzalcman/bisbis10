@@ -1,7 +1,12 @@
 package com.att.tdp.bisbis10.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.att.tdp.bisbis10.entities.Dish;
 import com.att.tdp.bisbis10.entities.Order;
 import com.att.tdp.bisbis10.entities.OrderItem;
 import com.att.tdp.bisbis10.entities.Restaurant;
@@ -22,9 +27,16 @@ public class OrderService {
         System.out.println(order.getOrderItems().size());
         Restaurant restaurant = restaurantRepository.findById(order.getRestaurantId())
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id " + order.getRestaurantId() + " not found."));
+        
+        List<Long> validDishIds = restaurant.getDishes().stream().map(Dish::getId).collect(Collectors.toList());
+
         for (OrderItem item : order.getOrderItems()) {
-                    item.setOrder(order);  // Make sure this line is executed correctly
-                }
+            if (!validDishIds.contains(item.getDishId())) {
+                throw new EntityNotFoundException("Dish with id " + item.getDishId() + " does not exist in restaurant with id " + order.getRestaurantId());
+            }
+            item.setOrder(order);  // Link the item to the order
+        }
+
         order.setRestaurant(restaurant);
         return orderRepository.save(order);
     }
